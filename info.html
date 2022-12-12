@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Flavors&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style/reset.css">
+    <link rel="stylesheet" href="./style/common.css">
+</head>
+<body>
+    <header>
+        <div class="header-wrap">
+            <div class="logo">
+                <a href="./index.html"></a>
+            </div>
+            <nav class="navigation">
+                
+                <ul class="lnb">
+                    <li><a href="#">예매</a></li>
+                    <li><a href="#">영화</a></li>
+                    <li><a href="#">영화관</a></li>
+                    <li><a href="#">마이페이지</a></li>
+                </ul>
+            </nav>
+            <nav class="ham-navigation">
+                <div class="ham-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="ham-lnb">
+                    <li><a href="#"><span>예매</span></a></li>
+                    <li><a href="#"><span>영화</span></a></li>
+                    <li><a href="#"><span>영화관</span></a></li>
+                    <li><a href="#"><span>마이페이지</span></a></li>
+                </ul>
+            </nav>
+            <div class="login">
+                <span><a href="#">로그인</a></span>
+                <span><a href="#">회원가입</a></span>
+            </div>
+        </div>
+    </header>
+    <div class="inner-box">
+        <div class="inner">
+        
+        </div>
+    </div>
+
+    
+    <script src="./script/common.js"></script>
+    <script>
+        const inner = document.querySelector('.inner');
+
+        let allMovies = [];
+
+        const URL = 'https://yts.mx/api/v2/list_movies.json?limit=5&page=15';
+
+        fetch(URL).then(data => data.json())
+        .then(data =>{
+            console.log(data);
+            allMovies = data.data.movies.map(movie => movie);
+            movieList(allMovies);
+        });
+        
+        const href = `https://yts.mx/api/v2/list_movies.json?limit=5&page=15&movie_id=${.id}`
+        console.log(href);
+
+        function movieList(movies){
+            console.log(movies);
+
+            for(movie of movies){
+                createDom(movie)
+            }
+        }
+        
+        function createDom(movie){
+            const movieBox = document.createElement('div');
+            movieBox.classList.add('movie-box');
+            
+            const imgBox = document.createElement('div');
+            imgBox.classList.add('img-box');
+            
+            const img = document.createElement('img');
+            img.setAttribute('src', movie.medium_cover_image);
+            
+            imgBox.append(img);
+            movieBox.append(imgBox);
+
+            const infoBox = document.createElement('div');
+            infoBox.classList.add('info-box');
+
+            const h3 = document.createElement('h3');
+            h3.innerHTML = movie.title;
+            const year = document.createElement('p');
+            year.innerHTML = movie.year;
+            
+            
+            const genreBox = document.createElement('div');
+            genreBox.classList.add('genre');
+
+            const genres = movie.genres;
+
+            let genreText = genres.join(', ');
+            genreBox.innerHTML = genreText;
+
+            infoBox.append(h3);
+            infoBox.append(year);
+            infoBox.append(genreBox);
+            movieBox.append(infoBox);
+
+            inner.append(movieBox);
+
+            
+
+        }   
+    </script>
+</body>
+<!--
+    <div class="img-box">
+            <img src="medium_cover_image" alt="">
+        </div>
+        <div class="info-box">
+            <h3>title</h3>
+            <p>year</p>
+            <p>genre</p>
+        </div>
+        <summary></summary>
+-->
+</html>
